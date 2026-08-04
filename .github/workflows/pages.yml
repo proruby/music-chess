@@ -33,9 +33,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      # Prérequis, une seule fois : Settings → Pages → Source = « GitHub Actions ».
+      # Le GITHUB_TOKEN ne peut pas créer le site Pages lui-même.
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .

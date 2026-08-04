@@ -130,3 +130,11 @@ l'initiative attire le centre tonal vers lui. La lutte deviendrait littéralemen
 **L'entendre à l'aveugle.** Si la sonification est assez lisible, on devrait pouvoir suivre une
 partie sans regarder, et sentir le danger monter avant de le voir. Ce serait le vrai test : un
 outil d'entraînement, pas seulement une curiosité.
+
+## Déploiement
+
+Le workflow `.github/workflows/pages.yml` lance les tests puis publie la page sur GitHub Pages
+à chaque poussée sur `main`.
+
+Prérequis, à faire une seule fois : **Settings → Pages → Source : « GitHub Actions »**. Le jeton
+d'un workflow ne peut pas créer le site Pages lui-même ; cette activation initiale est manuelle.
