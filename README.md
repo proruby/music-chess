@@ -108,6 +108,49 @@ donc le code réellement déployé. Il couvre `perft` jusqu'à la profondeur 4 (
 parties de référence jusqu'au mat, l'aller-retour SAN sur 214 coups, et les bornes des valeurs
 que la synthèse consomme.
 
+## Mode aveugle
+
+Peut-on *reconstituer* les coups à l'oreille, et pas seulement ressentir la partie ? Un auditeur
+qui suit la position ne choisit pas parmi 4096 coups mais parmi 32 en moyenne — les seuls coups
+légaux. En comptant, sur les 214 coups du corpus, combien de coups légaux produisent le même
+signal que celui joué :
+
+| Ce que l'auditeur perçoit | Coups identifiés sans ambiguïté |
+|---|---|
+| Signal complet (hauteurs, pan exact, timbre) | 100 % |
+| Sans panoramique du tout | 97,2 % |
+| Tour et dame confondues | 98,6 % |
+| Hauteurs seules, ni pan ni timbre | 93,0 % |
+| Départ et arrivée saisis, milieu du trait perdu | 91,6 % |
+| Seule l'arrivée saisie | 76,2 % |
+
+Trois conclusions. **Le panoramique est un luxe** : deux cases de même degré sont toujours
+écartées d'au moins deux colonnes, jamais adjacentes — donc aucune localisation fine n'est
+requise. **Le timbre aussi** : confondre tour et dame ne coûte que 1,4 point, la géométrie du
+trajet les sépare déjà. **C'est le trajet qui porte l'information**, pas la case d'arrivée.
+
+Mais tout repose sur l'identification du degré exact. Avec une tolérance de ±1 degré (une
+seconde), on tombe à 75,7 % ; à ±2 (une tierce), 62,1 %. C'est l'hypothèse la plus fragile du
+modèle, et c'est elle qui décide.
+
+Le bouton **Mode aveugle** corrige les quatre points de fuite mesurés :
+
+| Défaut | Mesure | Correction |
+|---|---|---|
+| Débit trop rapide | 14–18 notes/s (transcription fiable : 5–8) | ramené à ~6 notes/s |
+| Départ atténué | note de grâce à 35 % ; 76 % contre 92 % | départ et arrivée à plein niveau |
+| Tonique mobile | 26 modulations sur 214 demi-coups | cadre gelé en do ionien |
+| Camp non encodé | seule l'alternance le dit | marqueur bruité par camp |
+
+Le marqueur (coup sourd pour les Blancs, clic aigu pour les Noirs) n'aide pas à identifier un
+coup — on sait déjà à qui c'est. Il sert à se rattraper après un décrochage, ce que le cadre
+mobile rendait impossible.
+
+L'échange est assumé : en mode aveugle l'harmonie ne raconte plus rien, elle sert de règle
+graduée. Réserve d'honnêteté : les pourcentages sont exacts, mais les seuils perceptifs auxquels
+ils se comparent sont des ordres de grandeur issus de la littérature, pas des mesures faites
+ici. Seul un test avec de vrais auditeurs trancherait.
+
 ## Pistes non implémentées
 
 **La promotion comme transformation thématique.** Le pion a un motif — une note brève et sèche.

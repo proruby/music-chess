@@ -176,6 +176,13 @@ button.btn:disabled:hover{background:transparent; color:var(--fg)}
 .layers label:has(input:checked){background:var(--accent); border-color:var(--accent); color:var(--bg)}
 .layers input{position:absolute; opacity:0; width:0; height:0}
 
+.hint{
+  margin:10px 0 0; font-size:13.5px; line-height:1.5; color:var(--mute);
+  border-left:2px solid var(--accent); padding-left:11px; max-width:68ch;
+}
+.hint b{color:var(--fg); font-weight:600}
+button.btn[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:var(--bg); font-weight:600}
+button.btn[aria-pressed="true"]:hover{filter:brightness(1.12); background:var(--accent); color:var(--bg)}
 .picker{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:12px}
 select, textarea{
   font-family:var(--mono); font-size:12px; background:var(--panel); color:var(--fg);
@@ -262,7 +269,14 @@ footer{margin-top:56px; padding-top:16px; border-top:1px solid var(--line); colo
         <label><input type="checkbox" data-l="pulse" checked>Pouls</label>
         <label><input type="checkbox" data-l="threat" checked>Menace</label>
       </div>
+      <button class="btn" id="blind" aria-pressed="false">Mode aveugle</button>
     </div>
+    <p class="hint" id="blindnote" hidden>
+      Débit ramené à ~6 notes/seconde, case de départ au même niveau que
+      l'arrivée, cadre tonal gelé en do ionien, et un marqueur par camp&nbsp;:
+      <b>coup sourd</b> pour les Blancs, <b>clic aigu</b> pour les Noirs.
+      L'harmonie ne raconte plus rien — elle sert de règle graduée.
+    </p>
 
     <div class="picker">
       <span class="lbl">Partie</span>
@@ -351,6 +365,20 @@ footer{margin-top:56px; padding-top:16px; border-top:1px solid var(--line); colo
     <h2>Pourquoi la première version sonnait mal</h2>
     <p>Les tierces entre cases voisines créaient de la consonance <em>locale</em>. Mais deux coups séparés par dix plis touchaient des cases éloignées, sans aucune raison d'appartenir au même accord — et rien ne bourdonnait dessous pour les rattraper. Une note n'est belle que par rapport à un fond.</p>
     <p>Le passage aux degrés de gamme règle ça d'un coup&nbsp;: toute case est dans la gamme courante, donc toute note est juste, quelle que soit la distance. Et l'intuition d'origine — des intervalles liés à la géométrie — survit intacte, mais en relatif au lieu d'absolu.</p>
+  </section>
+
+  <section>
+    <h2>Mode aveugle</h2>
+    <p>Peut-on <em>reconstituer</em> les coups à l'oreille, et pas seulement ressentir la partie&nbsp;? Un auditeur qui suit la position ne choisit pas parmi 4096 coups mais parmi 32 en moyenne — les seuls coups légaux. En comptant, sur 214 coups, combien de coups légaux produisent le même signal&nbsp;:</p>
+    <ul class="gest" style="margin:14px 0">
+      <li><span class="g" style="font-size:13px">100<small style="font-size:9px">%</small></span><span class="t"><b>Signal complet</b><span>Hauteurs, panoramique exact, timbre. Aucune ambiguïté sur tout le corpus.</span></span></li>
+      <li><span class="g" style="font-size:13px">97<small style="font-size:9px">%</small></span><span class="t"><b>Sans panoramique du tout</b><span>Le pan est un luxe, pas une nécessité&nbsp;: deux cases de même degré sont toujours écartées d'au moins deux colonnes, jamais adjacentes.</span></span></li>
+      <li><span class="g" style="font-size:13px">93<small style="font-size:9px">%</small></span><span class="t"><b>Hauteurs seules, sans timbre</b><span>Confondre tour et dame ne coûte que 1,4 point&nbsp;: la géométrie du trajet les sépare déjà.</span></span></li>
+      <li><span class="g" style="font-size:13px">76<small style="font-size:9px">%</small></span><span class="t"><b>Seule l'arrivée est saisie</b><span>C'est le trajet qui porte l'information, pas la case d'arrivée. Rendre le départ audible fait passer de 76 à 92&nbsp;%.</span></span></li>
+    </ul>
+    <p>L'information suffisait donc largement. Ce qui manquait était sa livraison&nbsp;: la page envoyait 14 à 18 notes par seconde là où la transcription mélodique fiable plafonne vers 5 à 8, atténuait la case de départ à 35&nbsp;% du volume, et déplaçait la tonique d'une quinte toutes les huit demi-coups — une modulation manquée faussant tout ce qui suit, sans signal d'erreur.</p>
+    <p>Le bouton <b>Mode aveugle</b> corrige les quatre points&nbsp;: débit ramené à six notes par seconde, départ et arrivée au même niveau, cadre tonal gelé en do ionien, et un marqueur bruité par camp — coup sourd pour les Blancs, clic aigu pour les Noirs — qui ne peut être confondu avec aucun degré. Ce dernier n'aide pas à identifier un coup, puisqu'on sait déjà à qui c'est&nbsp;: il sert à se rattraper après un décrochage.</p>
+    <p style="color:var(--mute); font-size:14px">L'échange est assumé&nbsp;: l'harmonie ne raconte plus rien, elle sert de règle graduée. Et une réserve — les pourcentages sont exacts, mais les seuils perceptifs auxquels ils se comparent sont des ordres de grandeur. Seul un test avec de vrais auditeurs trancherait.</p>
   </section>
 
   <section>
@@ -636,6 +664,33 @@ const TIMBRE={
 };
 const STEP={p:0,n:.085,b:.072,r:.055,q:.062,k:0};
 
+/* ── MODE AVEUGLE ──────────────────────────────────────────────────────────
+   Écouter pour décoder, pas pour la dramaturgie. Mesuré sur 214 coups :
+   l'information suffit (93 % des coups sont identifiables parmi les coups
+   légaux à partir des seules hauteurs), mais la page la livrait mal.
+   Quatre corrections, une par point de fuite :
+   1. débit ramené de 14–18 notes/s à ~6 — la transcription mélodique fiable
+      plafonne vers 5–8 ;
+   2. la case de départ passe de note de grâce à note pleine : ne saisir que
+      l'arrivée donne 76 %, saisir départ + arrivée en donne 92 ;
+   3. tonique et mode gelés : la modulation d'une quinte toutes les ~8 demi-
+      coups décale toute la lecture ultérieure si elle est manquée ;
+   4. un marqueur bruité par camp — jamais confondu avec un degré — qui rend
+      la resynchronisation possible après un décrochage.                    */
+let blind=false;
+const STEP_BLIND={p:.17,n:.19,b:.16,r:.16,q:.16,k:.17}; // ≈ 6 notes/seconde
+const MARK_LEAD=.18;            // le marqueur précède le geste
+const BLIND_H={tonicPC:0,modeIdx:1};  // do ionien : le cadre le plus internalisé
+const stepFor=t=>blind?STEP_BLIND[t]:STEP[t];
+// durée du geste seul, marqueur non compris
+const gestureSpan=mv=>(pathSquares(mv).length-1)*stepFor(mv.p.toLowerCase());
+function sideMark(t,color){
+  if(!blind)return;
+  // bruit non accordé : impossible de le prendre pour un degré de la gamme
+  if(color==='w') noise(t,{type:'lowpass', freq:200, dur:.14,gain:.24,q:.7,shape:2});
+  else            noise(t,{type:'highpass',freq:5400,dur:.07,gain:.15,q:.7,shape:3});
+}
+
 function pathSquares(mv){
   const f0=fileOf(mv.from),r0=rankOf(mv.from),f1=fileOf(mv.to),r1=rankOf(mv.to);
   if(mv.p.toLowerCase()==='n'){
@@ -650,21 +705,25 @@ const panOf=i=>(fileOf(i)-3.5)/4.4;
 
 function playMove(ply,t0,beat){
   if(!layers.gest)return;
-  const mv=ply.mv, t=mv.p.toLowerCase(), T=TIMBRE[t], step=STEP[t];
+  const mv=ply.mv, t=mv.p.toLowerCase(), T=TIMBRE[t], step=stepFor(t);
   const path=pathSquares(mv);
+  sideMark(t0,colorOf(mv.p));
+  const g0=blind?t0+MARK_LEAD:t0;   // le geste laisse passer le marqueur
   // le geste : une note par case traversée, dans le sens du déplacement
   for(let k=0;k<path.length;k++){
     const last=k===path.length-1, first=k===0;
-    if(first&&path.length>1&&t!=='n'&&t!=='p'){
-      voice(t0,degToMidi(sqDeg(path[k])),Object.assign({},T,{gain:T.gain*.35,dur:.16,pan:panOf(path[k])}));
+    // hors mode aveugle, le départ n'est qu'une note de grâce qui donne le sens
+    if(!blind&&first&&path.length>1&&t!=='n'&&t!=='p'){
+      voice(g0,degToMidi(sqDeg(path[k])),Object.assign({},T,{gain:T.gain*.35,dur:.16,pan:panOf(path[k])}));
       continue;}
-    const when=t0+k*step*(t==='n'&&k===2?1.7:1);
-    voice(when,degToMidi(sqDeg(path[k])),Object.assign({},T,{
-      gain:T.gain*(last?1:.55),
-      dur:last?T.dur*(t==='r'||t==='q'?2.1:1.5):T.dur*.6,
-      pan:panOf(path[k])}));
+    const when=g0+k*step*(t==='n'&&k===2?1.7:1);
+    // en mode aveugle les deux extrémités portent l'information : elles priment
+    const gain=T.gain*(blind?(first||last?1:.45):(last?1:.55));
+    const dur=blind ? (last?T.dur*2.4 : first?T.dur*1.5 : T.dur*.5)
+                    : (last?T.dur*(t==='r'||t==='q'?2.1:1.5) : T.dur*.6);
+    voice(when,degToMidi(sqDeg(path[k])),Object.assign({},T,{gain,dur,pan:panOf(path[k])}));
   }
-  const arrive=t0+(path.length-1)*step;
+  const arrive=g0+(path.length-1)*step;
   // prise : la voix de la pièce prise s'effondre
   if(mv.cap){
     const ct=mv.cap.toLowerCase(), CT=TIMBRE[ct];
@@ -736,7 +795,9 @@ function computeHarmony(list){
   for(const p of list){ pc=nextTonic(pc,p.mv); p.h={tonicPC:pc,modeIdx:modeFor(p.an.mat)}; }
 }
 const REST={tonicPC:0,modeIdx:3};
-function setH(h){ H.tonicPC=h.tonicPC; H.modeIdx=h.modeIdx; }
+// Point de passage unique : en mode aveugle le cadre tonal ne bouge jamais,
+// quel que soit l'appelant. Une erreur de lecture ne peut plus se propager.
+function setH(h){ const g=blind?BLIND_H:h; H.tonicPC=g.tonicPC; H.modeIdx=g.modeIdx; }
 function pulse(t,an){
   if(!layers.pulse||!ctx)return;
   noise(t,{type:'bandpass',freq:1900,q:3,dur:.05,gain:.045+an.tension*.05,shape:4});
@@ -887,7 +948,10 @@ function start(){
     const p=plies[k], bpm=+$('#bpm').value;
     const beat=60/bpm;
     const heavy=p.mv.cap||p.an.check||p.mv.castle||p.mv.promo;
-    const bar=beat*(heavy?2.1:1.35);
+    // en mode aveugle la mesure s'adapte au geste : un trait long doit finir
+    // de sonner, et laisser un silence franc avant le marqueur suivant
+    const bar=blind ? MARK_LEAD+gestureSpan(p.mv)+beat*(heavy?1.9:1.25)
+                    : beat*(heavy?2.1:1.35);
     updateHarmony(p.an,when,p.h);
     pulse(when,p.an);
     if(heavy)pulse(when+beat*.98,p.an);
@@ -987,6 +1051,22 @@ $('#pgnload').addEventListener('click',()=>{
   const err=loadPlies($('#pgn').value);
   $('#pgnerr').textContent = err ? 'Coup illisible : « '+err+' ». '+plies.length+' demi-coups chargés avant l’arrêt.' :
     plies.length ? '' : 'Aucun coup trouvé.';
+});
+$('#blind').addEventListener('click',()=>{
+  stop(); blind=!blind;
+  const b=$('#blind');
+  b.setAttribute('aria-pressed',String(blind));
+  b.textContent=blind?'Mode aveugle ✓':'Mode aveugle';
+  $('#blindnote').hidden=!blind;
+  // le mode aveugle a besoin d'air entre les coups
+  if(blind){ $('#bpm').dataset.prev=$('#bpm').value; $('#bpm').value=58; }
+  else if($('#bpm').dataset.prev) $('#bpm').value=$('#bpm').dataset.prev;
+  $('#bpmv').textContent=$('#bpm').value;
+  // le cadre tonal change de nature : on réaligne l'affichage et le bourdon
+  const cur=liveMode?(idx>=0?plies[idx]:null):(idx>=0?plies[idx]:null);
+  setH(cur?cur.h:REST);
+  const an=cur?cur.an:{mat:0,tension:0,kw:0,kb:0};
+  paintState(an); if(ctx)updateHarmony(an);
 });
 $('#bpm').addEventListener('input',e=>$('#bpmv').textContent=e.target.value);
 $('#vol').addEventListener('input',e=>{
