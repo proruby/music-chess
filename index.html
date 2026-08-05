@@ -271,6 +271,15 @@ footer{margin-top:56px; padding-top:16px; border-top:1px solid var(--line); colo
       </div>
       <button class="btn" id="blind" aria-pressed="false">Mode aveugle</button>
     </div>
+    <div class="transport" style="border-top:0; margin-top:-1px">
+      <span class="lbl">Couches optionnelles</span>
+      <div class="layers" id="xopts" style="margin-left:0">
+        <label id="l-bass"><input type="checkbox" data-o="bass">Basse de pions</label>
+        <label id="l-clock"><input type="checkbox" data-o="clock">Pendules</label>
+        <label id="l-duo"><input type="checkbox" data-o="duo">Duo tonal</label>
+      </div>
+      <span class="lbl" id="clockinfo" style="margin-left:auto"></span>
+    </div>
     <p class="hint" id="blindnote" hidden>
       Débit ramené à ~6 notes/seconde, case de départ au même niveau que
       l'arrivée, cadre tonal gelé en do ionien, et un marqueur par camp&nbsp;:
@@ -382,13 +391,25 @@ footer{margin-top:56px; padding-top:16px; border-top:1px solid var(--line); colo
   </section>
 
   <section>
-    <h2>Pistes non implémentées</h2>
+    <h2>Couches optionnelles</h2>
+    <h3>La promotion comme métamorphose</h3>
+    <p>C'est la seule transformation que le jeu offre gratuitement&nbsp;: un objet humble devient l'objet puissant. Le motif du pion est d'abord énoncé tel qu'il a toujours sonné — deux notes, un intervalle étroit, timbre sec — puis augmenté deux fois. L'intervalle s'élargit de trois à sept puis dix demi-tons, la durée passe de 0,24&nbsp;s à 1,4&nbsp;s, le timbre devient celui de la pièce promue. Sous-promotion comprise&nbsp;: promouvoir en cavalier déploie le motif dans le timbre du cavalier.</p>
+    <h3>La basse de pions</h3>
+    <p>Un pas par colonne, la hauteur donnée par le pion le plus avancé — blancs dans le grave, noirs plus haut et plus discrets. Une colonne ouverte devient un silence dans l'ostinato, un pion poussé fait monter sa note et finit par sortir de la basse&nbsp;: un pion passé sur la septième chante au-dessus du reste. C'est la seule couche qui donne une forme à l'échelle de la minute plutôt que du coup, parce que les pions sont les seules pièces qui ne reculent jamais.</p>
+    <h3>Les pendules</h3>
+    <p>Lues dans les annotations <code>%clk</code> ou <code>%emt</code> d'un PGN. Chaque réflexion est rapportée à la médiane de la partie et non à une valeur absolue, si bien qu'une blitz et une classique respirent pareil, à leur propre échelle. Une longue réflexion devient un point d'orgue — et le silence <em>précède</em> le coup, car c'est le joueur qu'on entend penser. L'option se désactive d'elle-même sur une partie sans pendules.</p>
+    <h3>Le duo tonal</h3>
+    <p>Les Blancs en do, les Noirs à distance de triton. Chaque camp joue dans sa propre tonalité, et le bourdon penche vers celui qui mène&nbsp;: le camp en difficulté sonne alors littéralement faux, sur un fond qui n'est plus le sien. La tonalité rivale s'entend d'autant plus fort que la partie reste serrée — à matériel égal, on entend les deux, c'est-à-dire un triton. La cadence finale tranche dans la tonalité du vainqueur.</p>
+    <p style="margin-top:14px; color:var(--mute); font-size:14px">Le duo tonal et le mode aveugle s'excluent&nbsp;: l'un fait diverger le cadre tonal, l'autre le gèle pour qu'on puisse décoder. L'interface applique l'exclusion.</p>
+  </section>
+
+  <section>
+    <h2>Ce qui reste</h2>
     <ul class="next">
-      <li><b>La promotion comme métamorphose</b><span>Le pion a un motif&nbsp;: une note brève et sèche. La dame a un thème&nbsp;: un balayage large. La promotion devrait jouer le motif du pion puis le déployer en thème de dame — une transformation thématique au sens wagnérien. Les échecs offrent ça gratuitement.</span></li>
-      <li><b>La structure de pions comme basse</b><span>Les pions bougent lentement et dessinent le squelette de la position. Parfaits pour un ostinato de basse, un motif par colonne, qui ne change qu'aux ruptures. Ça donnerait une forme à l'échelle de la minute, pas du coup.</span></li>
-      <li><b>Le temps de réflexion comme rythme</b><span>Si le PGN contient les pendules, une longue réflexion devient un point d'orgue et une séquence rapide une strette. C'est la vraie respiration dramatique d'une partie, disponible sans rien inventer.</span></li>
-      <li><b>Deux tonalités qui se disputent</b><span>Blancs en Do, Noirs à distance de triton. Celui qui a l'initiative attire le centre tonal vers lui&nbsp;; la partie se résout dans la tonalité du vainqueur. La lutte devient littéralement audible.</span></li>
-      <li><b>L'entendre à l'aveugle</b><span>Si la sonification est assez lisible, on devrait pouvoir suivre une partie sans regarder — et sentir le danger monter avant de le voir. Ce serait le vrai test&nbsp;: un outil d'entraînement, pas seulement une curiosité.</span></li>
+      <li><b>Les pendules ignorent l'incrément</b><span>Le temps de réflexion est déduit de la baisse de pendule entre deux coups d'un même camp. Sur une cadence avec incrément, cette différence sous-estime la réflexion de la valeur de l'incrément — le PGN ne la contient pas toujours. Les annotations <code>%emt</code>, elles, sont exactes.</span></li>
+      <li><b>Le jeu libre ne se chronomètre pas</b><span>Rien n'empêcherait de mesurer le temps que met le joueur à décider, et de le réinjecter comme rythme en direct. La partie qu'on joue soi-même deviendrait sa propre partition, avec ses propres hésitations.</span></li>
+      <li><b>Le duo tonal frotte avec l'axe des modes</b><span>Le mode continue de suivre le matériel pendant que les toniques divergent. Les deux mécaniques disent la même chose par deux moyens différents&nbsp;; l'une devrait probablement céder à l'autre.</span></li>
+      <li><b>Rien de tout ceci n'a été validé à l'oreille</b><span>Les seuils, les calibrages, les pourcentages de décodabilité sont mesurés ou raisonnés, jamais éprouvés sur des auditeurs. C'est la seule chose qui manque vraiment.</span></li>
     </ul>
   </section>
 </div>
@@ -544,16 +565,44 @@ function analyse(s){
           mate:check&&nleg===0, stale:!check&&nleg===0,
           kw:kingDanger(s,'w'), kb:kingDanger(s,'b')};
 }
+// Les pendules vivent dans les commentaires {[%clk 0:02:30]} ou {[%emt 0:00:12]},
+// donc on tokenise en gardant les commentaires plutôt que de les jeter d'emblée.
+const HMS=(h,m,s)=>(+(h||0))*3600+(+(m||0))*60+(+(s||0));
+function readClock(txt){
+  let m=/\[%emt\s+(?:(\d+):)?(?:(\d+):)?(\d+(?:\.\d+)?)\]/.exec(txt);
+  if(m)return {emt:m[2]!=null?HMS(m[1],m[2],m[3]):HMS(0,m[1],m[3])};
+  m=/\[%clk\s+(?:(\d+):)?(\d+):(\d+(?:\.\d+)?)\]/.exec(txt);
+  if(m)return {clk:HMS(m[1],m[2],m[3])};
+  return null;
+}
 function parsePGN(text){
-  const body=text.replace(/\{[^}]*\}/g,' ').replace(/\[[^\]]*\]/g,' ').replace(/\$\d+/g,' ')
-                 .replace(/\d+\.(\.\.)?/g,' ').replace(/(1-0|0-1|1\/2-1\/2|\*)/g,' ');
-  const toks=body.split(/\s+/).filter(Boolean);
+  const body=text.replace(/^\s*\[[^\]]*\]\s*$/gm,' ')   // en-têtes, en début de ligne
+                 .replace(/\$\d+/g,' ');
+  const toks=body.match(/\{[^}]*\}|\d+\.(?:\.\.)?|1-0|0-1|1\/2-1\/2|\*|[^\s{]+/g)||[];
   let s=newGame(); const out=[];
   for(const tk of toks){
+    if(tk[0]==='{'){ // commentaire : on l'attache au coup qui précède
+      const c=readClock(tk);
+      if(c&&out.length)Object.assign(out[out.length-1],c);
+      continue;}
+    if(/^\d+\.(\.\.)?$/.test(tk)||/^(1-0|0-1|1\/2-1\/2|\*)$/.test(tk))continue;
     const mv=parseSAN(s,tk); if(!mv)return {plies:out,error:tk};
     out.push({mv,before:s,san:tk,after:applyMove(s,mv)});
     s=out[out.length-1].after;}
+  computeThink(out);
   return {plies:out,error:null};
+}
+// Temps de réflexion : direct si %emt, sinon la baisse de pendule du même camp.
+function computeThink(list){
+  const prev={w:null,b:null};
+  for(const p of list){
+    const c=colorOf(p.mv.p);
+    if(p.emt!=null)p.think=p.emt;
+    else if(p.clk!=null){
+      p.think = prev[c]!=null ? Math.max(0,prev[c]-p.clk) : null;
+      prev[c]=p.clk;
+    } else p.think=null;
+  }
 }
 
 /* ════════ MUSIQUE ════════ */
@@ -607,10 +656,17 @@ function audioInit(){
 // ── état harmonique courant ──
 let H={modeIdx:3, tonicPC:0};
 const scaleNow=()=>MODES[H.modeIdx].s;
-function degToMidi(deg){
+function degToMidi(deg,tonicPC){
   const sc=scaleNow(), oct=Math.floor(deg/7), st=sc[((deg%7)+7)%7];
-  return BASE + H.tonicPC + 12*oct + st;
+  return BASE + (tonicPC==null?H.tonicPC:tonicPC) + 12*oct + st;
 }
+/* ── OPTIONS ─────────────────────────────────────────────────────────────── */
+const opts={bass:false, clock:false, duo:false};
+// Duo tonal : les Blancs en do, les Noirs à distance de triton. Chaque camp
+// joue dans sa propre tonalité ; celui qui mène tire le bourdon vers la sienne,
+// et le perdant sonne littéralement faux. La cadence finale tranche.
+const DUO={w:0,b:6};
+const tonicFor=c=> opts.duo ? DUO[c] : H.tonicPC;
 const sqDeg=i=>fileOf(i)+2*rankOf(i);
 const mtof=m=>440*Math.pow(2,(m-69)/12);
 const regGain=m=>m<46?.62:m>74?.6:1;
@@ -703,9 +759,49 @@ function pathSquares(mv){
 }
 const panOf=i=>(fileOf(i)-3.5)/4.4;
 
+// La promotion comme transformation thématique : le motif du pion est énoncé
+// tel qu'il a toujours sonné, puis augmenté deux fois — l'intervalle s'élargit,
+// le registre monte, le timbre devient celui de la pièce promue. Le jeu offre
+// cette métamorphose gratuitement : un objet humble devient l'objet puissant.
+function promotion(t0,mv,tc){
+  const lo=Math.max(0,sqDeg(mv.to)-14), pan=panOf(mv.to), TT=TIMBRE[mv.promo];
+  const stages=[
+    {T:TIMBRE.p, step:2, n:2, gain:.28, dur:.24, bright:5,   dt:.12, at:0  },
+    {T:TT,       step:4, n:3, gain:.30, dur:.50, bright:2.6, dt:.15, at:.36},
+    {T:TT,       step:6, n:4, gain:.42, dur:1.40,bright:7,   dt:.19, at:.92},
+  ];
+  for(const s of stages)
+    for(let k=0;k<s.n;k++)
+      voice(t0+s.at+k*s.dt, degToMidi(lo+k*s.step,tc),
+        Object.assign({},s.T,{gain:s.gain*(k===s.n-1?1:.7), dur:s.dur, bright:s.bright, pan}));
+}
+
+// La structure de pions comme basse : un pas par colonne, la hauteur donnée par
+// le pion le plus avancé. Îlots, pions doublés, colonnes ouvertes deviennent un
+// motif qui ne change qu'aux ruptures — une forme à l'échelle de la minute.
+let bassStep=0;
+function playBass(t0,bar,st){
+  if(!opts.bass||!ctx)return;
+  const n=4, dt=bar/n;
+  for(let i=0;i<n;i++){
+    const f=(bassStep+i)%8;
+    let wr=-1,br=-1;
+    for(let r=0;r<8;r++){const p=st.b[sq(f,r)];
+      if(p==='P'&&r>wr)wr=r;
+      if(p==='p'&&(br<0||r<br))br=r;}
+    const when=t0+i*dt, pan=(f-3.5)/9;
+    if(wr>=0)voice(when,degToMidi(f+2*wr,tonicFor('w'))-12,
+      {partials:[['triangle',0,.65],['sine',-1200,.7]],dur:dt*1.6,gain:.17,bright:2.2,pan});
+    if(br>=0)voice(when+dt*.5,degToMidi(f+2*br,tonicFor('b'))-12,
+      {partials:[['sine',0,.85]],dur:dt*.85,gain:.075,bright:3.2,pan});
+  }
+  bassStep=(bassStep+n)%8;
+}
+
 function playMove(ply,t0,beat){
   if(!layers.gest)return;
   const mv=ply.mv, t=mv.p.toLowerCase(), T=TIMBRE[t], step=stepFor(t);
+  const tc=tonicFor(colorOf(mv.p));
   const path=pathSquares(mv);
   sideMark(t0,colorOf(mv.p));
   const g0=blind?t0+MARK_LEAD:t0;   // le geste laisse passer le marqueur
@@ -714,51 +810,55 @@ function playMove(ply,t0,beat){
     const last=k===path.length-1, first=k===0;
     // hors mode aveugle, le départ n'est qu'une note de grâce qui donne le sens
     if(!blind&&first&&path.length>1&&t!=='n'&&t!=='p'){
-      voice(g0,degToMidi(sqDeg(path[k])),Object.assign({},T,{gain:T.gain*.35,dur:.16,pan:panOf(path[k])}));
+      voice(g0,degToMidi(sqDeg(path[k]),tc),Object.assign({},T,{gain:T.gain*.35,dur:.16,pan:panOf(path[k])}));
       continue;}
     const when=g0+k*step*(t==='n'&&k===2?1.7:1);
     // en mode aveugle les deux extrémités portent l'information : elles priment
     const gain=T.gain*(blind?(first||last?1:.45):(last?1:.55));
     const dur=blind ? (last?T.dur*2.4 : first?T.dur*1.5 : T.dur*.5)
                     : (last?T.dur*(t==='r'||t==='q'?2.1:1.5) : T.dur*.6);
-    voice(when,degToMidi(sqDeg(path[k])),Object.assign({},T,{gain,dur,pan:panOf(path[k])}));
+    voice(when,degToMidi(sqDeg(path[k]),tc),Object.assign({},T,{gain,dur,pan:panOf(path[k])}));
   }
   const arrive=g0+(path.length-1)*step;
   // prise : la voix de la pièce prise s'effondre
   if(mv.cap){
     const ct=mv.cap.toLowerCase(), CT=TIMBRE[ct];
-    voice(arrive+.01,degToMidi(sqDeg(mv.to))-12,Object.assign({},CT,{
+    voice(arrive+.01,degToMidi(sqDeg(mv.to),tonicFor(colorOf(mv.cap)))-12,Object.assign({},CT,{
       gain:.30,dur:.6,glide:-9,sweep:.12,pan:panOf(mv.to)}));
     noise(arrive,{freq:200+VAL[ct]*90,dur:.2,gain:.13,q:.9,pan:panOf(mv.to)});}
   // roque : deux accords, la position se referme
   if(mv.castle){
     const sc=scaleNow();
     for(const[d,off]of[[3,0],[0,.34]]){
-      for(const deg of [d,d+2,d+4]) voice(arrive+off+.1,degToMidi(deg)+12,
+      for(const deg of [d,d+2,d+4]) voice(arrive+off+.1,degToMidi(deg,tc)+12,
         {partials:[['sine',0,.8],['triangle',6,.35]],dur:.9,gain:.14,bright:6,attack:.09,pan:mv.castle==='K'?.4:-.4});}}
-  // promotion : le motif du pion, puis son déploiement
-  if(mv.promo){
-    const d0=sqDeg(mv.to);
-    for(let k=0;k<5;k++) voice(arrive+.14+k*.07,degToMidi(d0+k*2),
-      Object.assign({},TIMBRE.q,{gain:.26,dur:.7,pan:panOf(mv.to)}));}
+  // promotion : énoncé du motif du pion, puis ses deux augmentations
+  if(mv.promo) promotion(arrive+.14,mv,tc);
   // échec : dyade tritonique, deux fois
   const a=ply.an;
   if(a.check&&!a.mate){
     for(const off of[0,.17]){
-      voice(arrive+.1+off,degToMidi(18),{partials:[['square',0,.4]],dur:.16,gain:.16,bright:8,q:2,pan:0});
-      voice(arrive+.1+off,degToMidi(18)+6,{partials:[['square',0,.4]],dur:.16,gain:.14,bright:8,q:2,pan:0});}}
+      voice(arrive+.1+off,degToMidi(18,tc),{partials:[['square',0,.4]],dur:.16,gain:.16,bright:8,q:2,pan:0});
+      voice(arrive+.1+off,degToMidi(18,tc)+6,{partials:[['square',0,.4]],dur:.16,gain:.14,bright:8,q:2,pan:0});}}
   return arrive;
 }
 
 function finale(t0,an,winner){
-  const sc=scaleNow(), root=BASE+H.tonicPC+24;
+  // en duo tonal la partie se résout dans la tonalité du vainqueur : c'est là
+  // que la dispute se tranche, et le bourdon vient s'y ranger
+  const tc = opts.duo ? DUO[winner] : H.tonicPC;
+  const sc=scaleNow(), root=BASE+tc+24;
+  if(ctx&&opts.duo&&drone){
+    const r=BASE+tc-12;
+    drone.parts.forEach((p,i)=>p.o.frequency.setTargetAtTime(
+      mtof(r+[0,7,12,12+sc[MODES[H.modeIdx].color]][i]),t0,.45));}
   if(an && an.stale){ // nul : quinte à vide, pas de tierce, rien n'est tranché
     for(const s of[0,7,12,19]) voice(t0+.4,root+s,
       {partials:[['sine',0,.9]],dur:5,gain:.13,attack:.6,bright:4});
     return;}
   // cadence parfaite : dominante, puis tonique
-  const dom=[4,6,8,10].map(d=>degToMidi(d)+ (winner==='w'?0:-12));
-  const ton=[0,2,4,7].map(d=>degToMidi(d)+ (winner==='w'?12:0));
+  const dom=[4,6,8,10].map(d=>degToMidi(d,tc)+ (winner==='w'?0:-12));
+  const ton=[0,2,4,7].map(d=>degToMidi(d,tc)+ (winner==='w'?12:0));
   for(const m of dom) voice(t0+.35,m,{partials:[['sawtooth',0,.22],['triangle',4,.5]],dur:1.1,gain:.15,bright:5,attack:.03});
   for(const m of ton) voice(t0+1.25,m,{partials:[['sawtooth',0,.2],['triangle',5,.5],['sine',-1200,.5]],dur:5.5,gain:.17,bright:6,attack:.05});
   voice(t0+1.25,root-12,{partials:[['sine',0,1]],dur:6,gain:.24,bright:3,attack:.08});
@@ -769,15 +869,25 @@ function updateHarmony(an,t,h){
   if(h)setH(h);
   if(!ctx)return;
   const when=t==null?ctx.currentTime:t;
-  const root=BASE+H.tonicPC-12, sc=scaleNow();
-  // fondamentale, quinte, octave, puis le degré qui signe le mode (#4 lydien, ♭2 phrygien…)
-  const freqs=[mtof(root),mtof(root+7),mtof(root+12),mtof(root+12+sc[MODES[H.modeIdx].color])];
+  const sc=scaleNow();
+  // en duo tonal le bourdon suit celui qui mène ; sinon la tonique accumulée
+  const lead  = opts.duo ? (an.mat<0?DUO.b:DUO.w) : H.tonicPC;
+  const rival = opts.duo ? (an.mat<0?DUO.w:DUO.b) : lead;
+  const root=BASE+lead-12;
+  // fondamentale, quinte, octave (ou la tonique rivale), puis le degré qui signe
+  // le mode (#4 lydien, ♭2 phrygien…)
+  const freqs=[mtof(root),mtof(root+7),
+               mtof(opts.duo?BASE+rival:root+12),
+               mtof(root+12+sc[MODES[H.modeIdx].color])];
   drone.parts.forEach((p,i)=>{
     p.o.frequency.setTargetAtTime(freqs[i],when,.5);
+    // la tonalité rivale s'entend d'autant plus fort que la partie reste serrée
+    if(i===2)p.g.gain.setTargetAtTime(
+      opts.duo?.04+.20*Math.max(0,1-Math.abs(an.mat)/8):.14,when,.6);
     if(i===3)p.g.gain.setTargetAtTime(.05+an.tension*.28,when,.6);});
   drone.g.gain.setTargetAtTime(layers.drone?.5:0,when,.35);
   const dg=Math.max(an.kw,an.kb);
-  threat.o.frequency.setTargetAtTime(mtof(BASE+H.tonicPC-12),when,.5);
+  threat.o.frequency.setTargetAtTime(mtof(BASE+lead-12),when,.5);
   threat.lfo.frequency.setTargetAtTime(3+dg*7,when,.4);
   threat.pan.pan.setTargetAtTime(an.kb>an.kw?.55:-.55,when,.4);
   threat.g.gain.setTargetAtTime(layers.threat?Math.max(0,dg-.25)*.30:0,when,.5);
@@ -793,6 +903,23 @@ function nextTonic(pc,mv){ // une prise majeure déplace la tonique d'une quinte
 function computeHarmony(list){
   let pc=0;
   for(const p of list){ pc=nextTonic(pc,p.mv); p.h={tonicPC:pc,modeIdx:modeFor(p.an.mat)}; }
+}
+// Le temps de réflexion comme rythme. On rapporte chaque réflexion à la médiane
+// de la partie plutôt qu'à une valeur absolue : une blitz et une classique
+// respirent alors pareil, à leur propre échelle. L'exposant écrase la plage,
+// sinon une seule longue réflexion écraserait tout le reste.
+function computeStretch(list){
+  const ts=list.map(p=>p.think).filter(t=>t!=null&&t>0).sort((a,b)=>a-b);
+  const med=ts.length?ts[Math.floor(ts.length/2)]:0;
+  // Au-dessus de la médiane on passe au logarithme : une puissance saturait, et
+  // 40 s comme 70 s tombaient au même plafond. En dessous, une puissance suffit.
+  for(const p of list){
+    if(p.think==null||!med){p.stretch=1; continue;}
+    const r=(p.think+1)/(med+1);
+    p.stretch = r>=1 ? Math.min(5,1+Math.log(r)*.85)
+                     : Math.max(.45,Math.pow(r,.45));
+  }
+  return ts.length>=4;   // en deçà, l'option n'a rien à exploiter
 }
 const REST={tonicPC:0,modeIdx:3};
 // Point de passage unique : en mode aveugle le cadre tonal ne bouge jamais,
@@ -810,12 +937,23 @@ const GAMES={
   'Anderssen — L’Immortelle verte, 1852':`1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5 4.b4 Bxb4 5.c3 Ba5 6.d4 exd4 7.O-O d3 8.Qb3 Qf6 9.e5 Qg6 10.Re1 Nge7 11.Ba3 b5 12.Qxb5 Rb8 13.Qa4 Bb6 14.Nbd2 Bb7 15.Ne4 Qf5 16.Bxd3 Qh5 17.Nf6+ gxf6 18.exf6 Rg8 19.Rad1 Qxf3 20.Rxe7+ Nxe7 21.Qxd7+ Kxd7 22.Bf5+ Ke8 23.Bd7+ Kf8 24.Bxe7#`,
   'Fischer — Partie du siècle, 1956':`1.Nf3 Nf6 2.c4 g6 3.Nc3 Bg7 4.d4 O-O 5.Bf4 d5 6.Qb3 dxc4 7.Qxc4 c6 8.e4 Nbd7 9.Rd1 Nb6 10.Qc5 Bg4 11.Bg5 Na4 12.Qa3 Nxc3 13.bxc3 Nxe4 14.Bxe7 Qb6 15.Bc4 Nxc3 16.Bc5 Rfe8+ 17.Kf1 Be6 18.Bxb6 Bxc4+ 19.Kg1 Ne2+ 20.Kf1 Nxd4+ 21.Kg1 Ne2+ 22.Kf1 Nc3+ 23.Kg1 axb6 24.Qb4 Ra4 25.Qxb6 Nxd1 26.h3 Rxa2 27.Kh2 Nxf2 28.Re1 Rxe1 29.Qd8+ Bf8 30.Nxe1 Bd5 31.Nf3 Ne4 32.Qb8 b5 33.h4 h5 34.Ne5 Kg7 35.Kg1 Bc5+ 36.Kf1 Ng3+ 37.Ke1 Bb4+ 38.Kd1 Bb3+ 39.Kc1 Ne2+ 40.Kb1 Nc3+ 41.Kc1 Rc2#`,
   'Mat du berger (court)':`1.e4 e5 2.Bc4 Nc6 3.Qh5 Nf6 4.Qxf7#`,
+  // Pendules inventées de toutes pièces, pour faire entendre l'option : les
+  // parties historiques ci-dessus sont antérieures aux pendules d'échecs.
+  'Démonstration — pendules simulées (3+0)':
+`1. e4 {[%clk 0:02:58]} e5 {[%clk 0:02:57]}
+2. Nf3 {[%clk 0:02:56]} Nc6 {[%clk 0:02:55]}
+3. Bc4 {[%clk 0:02:54]} d6 {[%clk 0:02:52]}
+4. Nc3 {[%clk 0:02:52]} Bg4 {[%clk 0:02:30]}
+5. Nxe5 {[%clk 0:02:11]} Bxd1 {[%clk 0:01:19]}
+6. Bxf7+ {[%clk 0:02:08]} Ke7 {[%clk 0:00:41]}
+7. Nd5# {[%clk 0:02:06]} 1-0`,
 };
 const GLYPH={k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'};
 const $=s=>document.querySelector(s);
 const boardEl=$('#board'), tintEl=$('#tint'), trailEl=$('#trail');
 let cells=[];
 let plies=[], idx=-1, live=null, liveMode=false, sel=-1, playing=false, timer=null, uiTimers=[];
+let hasClocks=false;
 
 function buildBoard(){
   for(let r=7;r>=0;r--)for(let f=0;f<8;f++){
@@ -919,7 +1057,8 @@ function loadPlies(raw){
   const r=parsePGN(raw);
   r.plies.forEach(p=>{p.an=analyse(p.after);});
   computeHarmony(r.plies);
-  plies=r.plies; idx=-1; liveMode=false; sel=-1;
+  hasClocks=computeStretch(r.plies);
+  plies=r.plies; idx=-1; liveMode=false; sel=-1; bassStep=0;
   renderMoves(); goto(-1);
   return r.error;
 }
@@ -950,14 +1089,20 @@ function start(){
     const heavy=p.mv.cap||p.an.check||p.mv.castle||p.mv.promo;
     // en mode aveugle la mesure s'adapte au geste : un trait long doit finir
     // de sonner, et laisser un silence franc avant le marqueur suivant
-    const bar=blind ? MARK_LEAD+gestureSpan(p.mv)+beat*(heavy?1.9:1.25)
-                    : beat*(heavy?2.1:1.35);
-    updateHarmony(p.an,when,p.h);
-    pulse(when,p.an);
-    if(heavy)pulse(when+beat*.98,p.an);
-    playMove(p,when,beat);
+    const base=blind ? MARK_LEAD+gestureSpan(p.mv)+beat*(heavy?1.9:1.25)
+                     : beat*(heavy?2.1:1.35);
+    // une longue réflexion devient un point d'orgue : le silence PRÉCÈDE le coup,
+    // c'est lui qu'on entend penser. Un coup rapide raccourcit simplement la mesure.
+    const st=(opts.clock&&p.stretch)?p.stretch:1;
+    const pause=st>1?(st-1)*base*.8:0;
+    const at=when+pause, bar=pause+base*(st<1?st:1);
+    updateHarmony(p.an,at,p.h);
+    pulse(at,p.an);
+    if(heavy)pulse(at+beat*.98,p.an);
+    playBass(at,base,p.after);
+    playMove(p,at,beat);
     const kk=k;
-    uiTimers.push(setTimeout(()=>{idx=kk;showPly(kk);},Math.max(0,(when-ctx.currentTime)*1000)));
+    uiTimers.push(setTimeout(()=>{idx=kk;showPly(kk);},Math.max(0,(at-ctx.currentTime)*1000)));
     when+=bar; k++;
     timer=setTimeout(tick,Math.max(30,bar*1000*.72));};
   tick();
@@ -968,7 +1113,9 @@ function stepOne(){
   const k=idx+1, p=plies[k];
   idx=k; showPly(k);
   updateHarmony(p.an,null,p.h);
-  playMove(p,ctx.currentTime+.04,60/(+$('#bpm').value));
+  const beat=60/(+$('#bpm').value);
+  playBass(ctx.currentTime+.04,beat*1.35,p.after);
+  playMove(p,ctx.currentTime+.04,beat);
   if(k===plies.length-1)finale(ctx.currentTime+1.1,p.an,colorOf(p.mv.p));
 }
 
@@ -1005,7 +1152,9 @@ function doLive(mv){
              h:{tonicPC:nextTonic(H.tonicPC,mv),modeIdx:modeFor(an.mat)}};
   plies.push(ply); idx=plies.length-1;
   updateHarmony(an,null,ply.h);
-  playMove(ply,ctx.currentTime+.03,60/(+$('#bpm').value));
+  const beat=60/(+$('#bpm').value);
+  playBass(ctx.currentTime+.03,beat*1.35,live);
+  playMove(ply,ctx.currentTime+.03,beat);
   renderMoves(); paint(live,mv,an); paintState(an); highlightMove(idx);
   $('#plyn').textContent=(Math.floor(idx/2)+1)+(idx%2?'…':'.');
   $('#san').textContent=san;
@@ -1040,17 +1189,35 @@ buildBoard(); buildGestures();
 $('#games').innerHTML=Object.keys(GAMES).map(k=>'<option>'+k+'</option>').join('');
 loadPlies(GAMES[Object.keys(GAMES)[0]]);
 
+syncOptionUI();
 $('#play').addEventListener('click',()=>{ if(liveMode)return; playing?stop():start(); });
 $('#step').addEventListener('click',()=>{stop(); liveMode?null:stepOne();});
 $('#reset').addEventListener('click',()=>{stop(); liveMode?enterLive():goto(-1);});
-$('#games').addEventListener('change',e=>{stop(); liveMode=false; loadPlies(GAMES[e.target.value]);});
+$('#games').addEventListener('change',e=>{stop(); liveMode=false; loadPlies(GAMES[e.target.value]); syncOptionUI();});
 $('#freeplay').addEventListener('click',enterLive);
 $('#pgnbtn').addEventListener('click',()=>{const b=$('#pgnbox'); b.hidden=!b.hidden; if(!b.hidden)$('#pgn').focus();});
 $('#pgnload').addEventListener('click',()=>{
   stop(); liveMode=false;
-  const err=loadPlies($('#pgn').value);
+  const err=loadPlies($('#pgn').value); syncOptionUI();
   $('#pgnerr').textContent = err ? 'Coup illisible : « '+err+' ». '+plies.length+' demi-coups chargés avant l’arrêt.' :
     plies.length ? '' : 'Aucun coup trouvé.';
+});
+// Le duo tonal et le mode aveugle sont incompatibles par construction : l'un
+// fait diverger le cadre tonal, l'autre le gèle pour qu'on puisse décoder.
+function syncOptionUI(){
+  $('#xopts').querySelectorAll('input').forEach(i=>{
+    const o=i.dataset.o;
+    const off = (o==='duo'&&blind) || (o==='clock'&&!hasClocks);
+    i.disabled=off; if(off&&i.checked){i.checked=false; opts[o]=false;}
+    i.closest('label').style.opacity=off?.4:1;
+    i.closest('label').style.cursor=off?'not-allowed':'pointer';});
+  $('#clockinfo').textContent = hasClocks ? '' : 'partie sans pendules';
+}
+$('#xopts').addEventListener('change',e=>{
+  stop(); opts[e.target.dataset.o]=e.target.checked;
+  if(e.target.dataset.o==='duo'&&ctx){
+    const an=idx>=0&&plies[idx]?plies[idx].an:{mat:0,tension:0,kw:0,kb:0};
+    updateHarmony(an);}
 });
 $('#blind').addEventListener('click',()=>{
   stop(); blind=!blind;
@@ -1058,6 +1225,7 @@ $('#blind').addEventListener('click',()=>{
   b.setAttribute('aria-pressed',String(blind));
   b.textContent=blind?'Mode aveugle ✓':'Mode aveugle';
   $('#blindnote').hidden=!blind;
+  syncOptionUI();
   // le mode aveugle a besoin d'air entre les coups
   if(blind){ $('#bpm').dataset.prev=$('#bpm').value; $('#bpm').value=58; }
   else if($('#bpm').dataset.prev) $('#bpm').value=$('#bpm').dataset.prev;

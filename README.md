@@ -93,8 +93,10 @@ Ouvrir la page. Aucune installation.
 
 - **Écouter** rejoue la partie sélectionnée ; `espace` met en pause, `←`/`→` avancent d'un coup.
 - **Jouer moi-même** ouvre un échiquier libre — les coups sont sonifiés au fil du jeu.
-- **Coller un PGN** accepte n'importe quelle partie en notation algébrique standard.
+- **Coller un PGN** accepte n'importe quelle partie en notation algébrique standard,
+  annotations de pendule `[%clk]` / `[%emt]` comprises (exports lichess et chess.com).
 - Les quatre bascules isolent les couches : gestes, bourdon, pouls, menace.
+- Trois couches optionnelles s'ajoutent : basse de pions, pendules, duo tonal.
 
 ## Tests
 
@@ -151,28 +153,47 @@ graduée. Réserve d'honnêteté : les pourcentages sont exacts, mais les seuils
 ils se comparent sont des ordres de grandeur issus de la littérature, pas des mesures faites
 ici. Seul un test avec de vrais auditeurs trancherait.
 
-## Pistes non implémentées
+## Couches optionnelles
 
-**La promotion comme transformation thématique.** Le pion a un motif — une note brève et sèche.
-La dame a un thème — un balayage large. Une promotion devrait jouer le motif du pion *puis le
-déployer* en thème de dame. C'est du Wagner, et les échecs l'offrent gratuitement : aucun autre
-jeu n'a un objet humble qui devient littéralement l'objet puissant. La version actuelle ne fait
-que l'esquisser.
+**La promotion comme métamorphose** — toujours active. C'est la seule transformation que le jeu
+offre gratuitement : un objet humble devient l'objet puissant. Le motif du pion est énoncé tel
+qu'il a toujours sonné, puis augmenté deux fois : l'intervalle passe de 3 à 7 puis 10 demi-tons,
+la durée de 0,24 s à 1,4 s, et le timbre devient celui de la pièce promue. Sous-promotion
+comprise.
 
-**Le temps de réflexion comme rythme.** Si le PGN contient les pendules, une longue réflexion
-devient un point d'orgue et une séquence de blitz une strette. C'est la respiration dramatique
-réelle d'une partie, et il n'y a rien à inventer : la donnée est déjà là.
+**La basse de pions** — un pas par colonne, la hauteur donnée par le pion le plus avancé (blancs
+dans le grave, noirs plus haut et plus discrets). Une colonne ouverte devient un silence dans
+l'ostinato ; un pion poussé fait monter sa note et finit par sortir de la basse — un pion passé
+sur la septième chante au-dessus du reste. C'est la seule couche qui donne une forme à l'échelle
+de la minute plutôt que du coup.
 
-**La structure de pions comme basse.** Les pions bougent lentement et dessinent le squelette de
-la position — parfaits pour un ostinato, un motif par colonne, qui ne change qu'aux ruptures.
-Ça donnerait une forme à l'échelle de la minute, pas du coup.
+**Les pendules** — lues dans les annotations `%clk` ou `%emt`. Chaque réflexion est rapportée à
+la médiane de la partie et non à une valeur absolue, si bien qu'une blitz et une classique
+respirent pareil à leur propre échelle. Une longue réflexion devient un point d'orgue, et le
+silence *précède* le coup : c'est le joueur qu'on entend penser. L'option se désactive d'elle-même
+sur une partie sans pendules.
 
-**Deux tonalités qui se disputent.** Blancs en Do, Noirs à distance de triton ; celui qui a
-l'initiative attire le centre tonal vers lui. La lutte deviendrait littéralement audible.
+**Le duo tonal** — les Blancs en do, les Noirs à distance de triton. Chaque camp joue dans sa
+propre tonalité et le bourdon penche vers celui qui mène : le camp en difficulté sonne
+littéralement faux, sur un fond qui n'est plus le sien. La tonalité rivale s'entend d'autant plus
+fort que la partie reste serrée — à matériel égal on entend les deux, c'est-à-dire un triton. La
+cadence finale tranche dans la tonalité du vainqueur.
 
-**L'entendre à l'aveugle.** Si la sonification est assez lisible, on devrait pouvoir suivre une
-partie sans regarder, et sentir le danger monter avant de le voir. Ce serait le vrai test : un
-outil d'entraînement, pas seulement une curiosité.
+Le duo tonal et le mode aveugle s'excluent : l'un fait diverger le cadre tonal, l'autre le gèle
+pour qu'on puisse décoder. L'interface applique l'exclusion.
+
+## Ce qui reste
+
+- **Les pendules ignorent l'incrément.** Le temps de réflexion est déduit de la baisse de pendule
+  entre deux coups d'un même camp ; sur une cadence avec incrément, cette différence sous-estime
+  la réflexion de la valeur de l'incrément, que le PGN ne contient pas toujours. Les annotations
+  `%emt` sont exactes.
+- **Le jeu libre ne se chronomètre pas.** Rien n'empêcherait de mesurer le temps de décision du
+  joueur et de le réinjecter comme rythme en direct.
+- **Le duo tonal frotte avec l'axe des modes.** Le mode continue de suivre le matériel pendant que
+  les toniques divergent : deux mécaniques disent la même chose par deux moyens différents.
+- **Rien n'a été validé à l'oreille.** Seuils, calibrages et pourcentages de décodabilité sont
+  mesurés ou raisonnés, jamais éprouvés sur des auditeurs.
 
 ## Déploiement
 
